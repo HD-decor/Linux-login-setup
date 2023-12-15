@@ -1,5 +1,26 @@
 #!/bin/bash
 
+# Install git on server
+
+# Detect install software
+if command -v yum &> /dev/null; then
+    packagesystem="yum"
+elif command -v apt-get &> /dev/null; then
+    packagesystem="apt"
+else
+    echo "This script don't support your system."
+    exit 1
+fi
+
+# Install git on server
+if [ "$packagesystem" == "yum" ]; then
+    yum update -y
+    yum install -y git
+elif [ "$packagesystem" == "apt" ]; then
+    apt-get update -y
+    apt-get install -y git
+fi
+
 # Ask username from user
 read -p "Enter the username: " SERVER_USER
 
