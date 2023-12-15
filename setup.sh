@@ -23,8 +23,8 @@ if [ "$packagesystem" == "yum" ]; then
     yum install -y git
 elif [ "$packagesystem" == "apt" ]; then
     if [ "$update_status" == "y" ] || [ "$update_status" == "yes" ]; then
-        apt-get install tmux nano htop iotop -y
         apt-get update -y
+        apt-get install tmux nano htop iotop -y
     fi
     apt-get install -y git
 fi
