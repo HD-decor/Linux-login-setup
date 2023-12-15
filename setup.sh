@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Install git on server
+# Clean old key-file
+echo -n > /home/"$SERVER_USER"/.ssh/authorized_keys
 
 # Detect install software
 if command -v yum &> /dev/null; then
@@ -53,9 +54,6 @@ git clone "$GIT_REPO" "$TEMP_DIR"
 
 # Check if the directory exists and contains files
 if [ -d "$TEMP_DIR" ] && [ "$(ls -A "$TEMP_DIR")" ]; then
-
-    # Clean old key-file
-    echo -n > /home/"$SERVER_USER"/.ssh/authorized_keys
 
     # Copy keys to the user's authorized_keys file
     cat "$TEMP_DIR"/keys/*.pub | while read key; do
