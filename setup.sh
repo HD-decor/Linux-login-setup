@@ -46,7 +46,7 @@ if [ -z "$SERVER_USER" ]; then
 fi
 
 # Clean old key-file
-# echo -n > /home/"$SERVER_USER"/.ssh/authorized_keys
+echo -n > /home/"$SERVER_USER"/.ssh/authorized_keys
 
 # Define basic variables
 GIT_REPO="https://github.com/HD-decor/Linux-login-setup"
@@ -69,9 +69,10 @@ git clone "$GIT_REPO" "$TEMP_DIR"
 if [ -d "$TEMP_DIR" ] && [ "$(ls -A "$TEMP_DIR")" ]; then
 
     # Copy keys to the user's authorized_keys file
-    cat "$TEMP_DIR"/keys/*.pub | while read key; do
+    while IFS= read -r key; do
         echo "$key" | sudo tee -a /home/"$SERVER_USER"/.ssh/authorized_keys > /dev/null
-    done
+    done < <(cat "$TEMP_DIR"/keys/*.pub)
+
 
 
     sudo chown "$SERVER_USER":"$SERVER_USER" /home/"$SERVER_USER"/.ssh/authorized_keys
