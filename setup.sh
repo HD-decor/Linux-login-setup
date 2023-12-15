@@ -13,17 +13,19 @@ else
 fi
 
 # Update status
-read -p "Do you want run yum/apt update before install git? (y/n): " update_status
+read -p "Do you want run yum/apt update and install basic stuff before install git? (y/n): " update_status
 
 
 # Install git on server
 if [ "$packagesystem" == "yum" ]; then
     if [ "$update_status" == "y" ] || [ "$update_status" == "yes" ]; then
         yum update -y
+        yum install tmux nano htop iotop -y
     fi
     yum install -y git
 elif [ "$packagesystem" == "apt" ]; then
     if [ "$update_status" == "y" ] || [ "$update_status" == "yes" ]; then
+        apt-get install tmux nano htop iotop -y
         apt-get update -y
     fi
     apt-get install -y git
