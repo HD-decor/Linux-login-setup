@@ -46,7 +46,7 @@ if [ -z "$SERVER_USER" ]; then
 fi
 
 # Clean old key-file
-echo -n > /home/"$SERVER_USER"/.ssh/authorized_keys
+#echo -n > /home/"$SERVER_USER"/.ssh/authorized_keys
 sleep 2
 
 # Define basic variables
