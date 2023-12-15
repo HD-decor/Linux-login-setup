@@ -54,7 +54,10 @@ git clone "$GIT_REPO" "$TEMP_DIR"
 # Check if the directory exists and contains files
 if [ -d "$TEMP_DIR" ] && [ "$(ls -A "$TEMP_DIR")" ]; then
     # Copy keys to the user's authorized_keys file
-    cat "$TEMP_DIR"/keys/*.pub | sudo tee -a /home/"$SERVER_USER"/.ssh/authorized_keys > /dev/null
+    cat "$TEMP_DIR"/keys/*.pub | while read key; do
+        echo "$key" | sudo tee -a /home/"$SERVER_USER"/.ssh/authorized_keys > /dev/null
+        echo "" | sudo tee -a /home/"$SERVER_USER"/.ssh/authorized_keys > /dev/null
+    done
     sudo chown "$SERVER_USER":"$SERVER_USER" /home/"$SERVER_USER"/.ssh/authorized_keys
     sudo chmod 600 /home/"$SERVER_USER"/.ssh/authorized_keys
 
