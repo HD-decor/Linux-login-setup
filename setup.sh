@@ -46,7 +46,12 @@ if [ -z "$SERVER_USER" ]; then
 fi
 
 # Clean old key-file
-#echo -n > /home/"$SERVER_USER"/.ssh/authorized_keys
+if [ -e /home/"$SERVER_USER"/.ssh/authorized_keys ]; then
+    rm /home/"$SERVER_USER"/.ssh/authorized_keys
+fi
+sleep 2
+# Create new one
+touch /home/"$SERVER_USER"/.ssh/authorized_keys
 sleep 2
 
 # Define basic variables
