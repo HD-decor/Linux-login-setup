@@ -44,8 +44,6 @@ else
     sudo mkdir -p /home/"$SERVER_USER"/.ssh
     sudo chown -R "$SERVER_USER":"$SERVER_USER" /home/"$SERVER_USER"/.ssh
     sudo chmod 700 /home/"$SERVER_USER"/.ssh
-    sudo usermod -aG sudo "$SERVER_USER"
-    echo "User $SERVER_USER created and added to sudo group."
 fi
 
 # Clone the Git repository containing SSH keys
