@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Clean old key-file
-echo -n > /home/"$SERVER_USER"/.ssh/authorized_keys
-
 # Detect install software
 if command -v yum &> /dev/null; then
     packagesystem="yum"
@@ -32,8 +29,24 @@ elif [ "$packagesystem" == "apt" ]; then
     apt-get install -y git
 fi
 
+# Check if git is installed
+if ! command -v git &> /dev/null; then
+    echo "Git is not installed. Please install Git manually."
+    exit 1
+fi
+
+
 # Ask username from user
 read -p "Enter the username: " SERVER_USER
+
+# Check if the username is provided
+if [ -z "$SERVER_USER" ]; then
+    echo "Username cannot be empty. Exiting...."
+    exit 1
+fi
+
+# Clean old key-file
+echo -n > /home/"$SERVER_USER"/.ssh/authorized_keys
 
 # Define basic variables
 GIT_REPO="https://github.com/HD-decor/Linux-login-setup"
