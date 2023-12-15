@@ -47,12 +47,9 @@ fi
 
 # Clean old key-file
 if [ -e /home/"$SERVER_USER"/.ssh/authorized_keys ]; then
-    rm /home/"$SERVER_USER"/.ssh/authorized_keys
+    cat /dev/null > /home/"$SERVER_USER"/.ssh/authorized_keys
+    sleep 2
 fi
-sleep 2
-# Create new one
-touch /home/"$SERVER_USER"/.ssh/authorized_keys
-sleep 2
 
 # Define basic variables
 GIT_REPO="https://github.com/HD-decor/Linux-login-setup"
