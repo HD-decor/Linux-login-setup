@@ -12,12 +12,18 @@ else
     exit 1
 fi
 
+# Update status
+read -p "Do you want run yum/apt update before install git? (y/n): " update_status
+
+
 # Install git on server
 if [ "$packagesystem" == "yum" ]; then
-    yum update -y
+    if [ "$update_status" == "y" or "yes" ]; then
+        yum update -y
     yum install -y git
 elif [ "$packagesystem" == "apt" ]; then
-    apt-get update -y
+    if [ "$update_status" == "y" or "yes" ]; then
+        apt-get update -y
     apt-get install -y git
 fi
 
