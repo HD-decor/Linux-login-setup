@@ -18,11 +18,11 @@ read -p "Do you want run yum/apt update before install git? (y/n): " update_stat
 
 # Install git on server
 if [ "$packagesystem" == "yum" ]; then
-    if [ "$update_status" == "y" or "yes" ]; then
+    if [ "$update_status" == "y" ] || [ "$update_status" == "yes" ]; then
         yum update -y
     yum install -y git
 elif [ "$packagesystem" == "apt" ]; then
-    if [ "$update_status" == "y" or "yes" ]; then
+    if [ "$update_status" == "y" ] || [ "$update_status" == "yes" ]; then
         apt-get update -y
     apt-get install -y git
 fi
