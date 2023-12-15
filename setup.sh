@@ -46,7 +46,7 @@ if [ -z "$SERVER_USER" ]; then
 fi
 
 # Clean old key-file
-echo -n > /home/"$SERVER_USER"/.ssh/authorized_keys
+# echo -n > /home/"$SERVER_USER"/.ssh/authorized_keys
 
 # Define basic variables
 GIT_REPO="https://github.com/HD-decor/Linux-login-setup"
