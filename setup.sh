@@ -18,8 +18,8 @@ if [[ "$update_status" =~ ^[Yy](es)?$ ]]; then
         sudo yum update -y
         sudo yum install -y tmux nano htop iotop
     elif [ "$packagesystem" == "apt" ]; then
-        sudo apt-get update -y
-        sudo apt-get install -y tmux nano htop iotop
+        apt-get update -y
+        apt-get install -y tmux nano htop iotop
     fi
 fi
 
@@ -27,7 +27,7 @@ fi
 if [ "$packagesystem" == "yum" ]; then
     sudo yum install -y git
 elif [ "$packagesystem" == "apt" ]; then
-    sudo apt-get install -y git
+    apt-get install -y git
 fi
 
 # Check if Git is installed
