@@ -61,6 +61,14 @@ TEMP_DIR=$(mktemp -d)
 # Check if the user exists and create if not
 if id "$SERVER_USER" &>/dev/null; then
     echo "User $SERVER_USER already exists."
+    if [ -d "/home/$SERVER_USER/.ssh" ]; then
+        echo "Path /home/$SERVER_USER/.ssh already exists."
+    else
+        echo "Path /home/$SERVER_USER/.ssh is missing."
+        sudo mkdir -p "/home/$SERVER_USER/.ssh"
+        echo "Path /home/$SERVER_USER/.ssh is now created!"
+    fi
+
 else
     if [ "$packagesystem" == "yum" ]; then
         sudo useradd -m -s /bin/bash "$SERVER_USER"
@@ -74,6 +82,7 @@ else
         chmod 700 "/home/$SERVER_USER/.ssh"
     fi
 fi
+
 
 # Clone the Git repository containing SSH keys
 if git clone "$GIT_REPO" "$TEMP_DIR"; then
