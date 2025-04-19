@@ -265,34 +265,6 @@ if [[ "$zabbix_status" == "y" || "$zabbix_status" == "Y" || "$zabbix_status" == 
             exit 0
             ;;
 
-
-
-
-
-        debian:10*)
-            echo "Debian 10"
-            echo "deb https://repo.zabbix.com/zabbix/6.0/debian buster main" > /etc/apt/sources.list.d/zabbix.list
-            wget -qO - https://repo.zabbix.com/zabbix-official-repo.key | gpg --dearmor -o /etc/apt/trusted.gpg.d/zabbix.gpg
-
-            apt update
-            apt install -y zabbix-agent2 
-            apt install -y zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
-
-            HOSTNAME=$(hostname)
-            echo "[INFO] Configuring Zabbix agent..."
-            ZABBIX_CONFIG="/etc/zabbix/zabbix_agent2.conf"
-            cp $ZABBIX_CONFIG ${ZABBIX_CONFIG}.bak
-            sed -i "s|^Server=.*|Server=zabbix.tietokettu.net|" $ZABBIX_CONFIG
-            sed -i "s|^ServerActive=.*|ServerActive=zabbix.tietokettu.net|" $ZABBIX_CONFIG
-            sed -i "s|^Hostname=.*|Hostname=${HOSTNAME}|" $ZABBIX_CONFIG
-
-            systemctl enable zabbix-agent2
-            systemctl restart zabbix-agent2
-
-            echo "[SUCCESS] Zabbix Agent 2 installed and configured for $HOSTNAME."
-            exit 0
-            ;;
-
         debian:11*)
             echo "Debian 11"
             echo "deb https://repo.zabbix.com/zabbix/6.0/debian bullseye main" > /etc/apt/sources.list.d/zabbix.list
