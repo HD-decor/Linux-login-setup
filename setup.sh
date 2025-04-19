@@ -122,13 +122,46 @@ elif [ "$packagesystem" == "apt" ]; then
     sed -i '/^PermitRootLogin/s/yes/no/' /etc/ssh/sshd_config
     sed -i '/^PasswordAuthentication/s/yes/no/' /etc/ssh/sshd_config
     sed -i '/^ChallengeResponseAuthentication/s/yes/no/' /etc/ssh/sshd_config
-    systemctl restart sshd.service
+    case "$ID" in
+    ubuntu)
+        echo "[INFO] Ubuntu detected, restarting ssh service..."
+        systemctl restart ssh 
+        ;;
+    debian)
+        echo "[INFO] Debian detected, restarting sshd service..."
+        systemctl restart sshd.service
+        ;;
+    *)
+
+        echo "[ERROR] Unsupported OS, cannot restart SSH or SSHD service."
+        exit 1
+        ;;
+
+    esac
 fi
 
 echo "SSH configuration updated: Root login disabled, Password authentication disabled, RSA keys enforced."
 
 # Clean up temp directory
 rm -rf "$TEMP_DIR"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #
@@ -367,17 +400,17 @@ if [[ "$zabbix_status" == "y" || "$zabbix_status" == "Y" || "$zabbix_status" == 
             exit 0
             ;;
         ubuntu:24.04)
-            echo "Ubuntu 24.04"
+            echo "[INFO] Ubuntu 24.04 detected"
             ZBX_VER=6.0
-            wget -q https://repo.zabbix.com/zabbix/${ZBX_VER}/ubuntu/pool/main/z/zabbix-release/zabbix-release_${ZBX_VER}-1+ubuntu24.04_all.deb
-            dpkg -i zabbix-release_${ZBX_VER}-1+ubuntu24.04_all.deb
+            wget -q https://repo.zabbix.com/zabbix/${ZBX_VER}/ubuntu/pool/main/z/zabbix-release/zabbix-release_${ZBX_VER}-6+ubuntu24.04_all.deb
+            dpkg -i zabbix-release_${ZBX_VER}-6+ubuntu24.04_all.deb
             apt update
             apt install -y zabbix-agent2
 
-            HOSTNAME=$(hostname)
             echo "[INFO] Configuring Zabbix agent..."
             ZABBIX_CONFIG="/etc/zabbix/zabbix_agent2.conf"
             cp $ZABBIX_CONFIG ${ZABBIX_CONFIG}.bak
+
             sed -i "s|^Server=.*|Server=zabbix.tietokettu.net|" $ZABBIX_CONFIG
             sed -i "s|^ServerActive=.*|ServerActive=zabbix.tietokettu.net|" $ZABBIX_CONFIG
             sed -i "s|^Hostname=.*|Hostname=${HOSTNAME}|" $ZABBIX_CONFIG
@@ -385,12 +418,16 @@ if [[ "$zabbix_status" == "y" || "$zabbix_status" == "Y" || "$zabbix_status" == 
             systemctl enable zabbix-agent2
             systemctl restart zabbix-agent2
 
-            echo "[SUCCESS] Zabbix Agent 2 installed and configured for $HOSTNAME."
+            echo "[SUCCESS] Zabbix Agent 2 installed and configured for ${HOSTNAME}"
             exit 0
             ;;
         *)
-            echo "Unsupported OS or version"
+            echo "Unsupported OS or version | Zabbix"
             exit 1
             ;;
     esac
 fi
+
+#
+# ZABBIX END
+#
