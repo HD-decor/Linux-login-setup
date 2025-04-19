@@ -136,9 +136,9 @@ rm -rf "$TEMP_DIR"
 #
 
 # Update and install basic tools
-read -p "Do you want to instaa and setup Zabbix? (y/n): " zabbix_status
+read -p "Do you want to install and setup Zabbix? (y/n): " zabbix_status
 
-if [[ "$zabbix_status" =~ ^[Yy](es)?$ ]]; then
+if [[ "$zabbix_status" == "y" || "$zabbix_status" == "Y" || "$zabbix_status" == "yes" || "$zabbix_status" == "Yes" ]]; then
     . /etc/os-release
 
     echo "DEBUG: ID=$ID"
