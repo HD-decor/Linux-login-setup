@@ -269,38 +269,13 @@ if [[ "$zabbix_status" == "y" || "$zabbix_status" == "Y" || "$zabbix_status" == 
 
 
 
-        debian:9*)
-            echo "Debian 9"
-            ZBX_VER=6.0
-            ZBX_PKG_VER=4
-            wget -q https://repo.zabbix.com/zabbix/${ZBX_VER}/debian/pool/main/z/zabbix-release/zabbix-release_${ZBX_VER}-${ZBX_PKG_VER}+debian9_all.deb
-            dpkg -i zabbix-release_${ZBX_VER}-${ZBX_PKG_VER}+debian9_all.deb
-            apt update
-            apt install -y zabbix-agent2
-
-            HOSTNAME=$(hostname)
-            echo "[INFO] Configuring Zabbix agent..."
-            ZABBIX_CONFIG="/etc/zabbix/zabbix_agent2.conf"
-            cp $ZABBIX_CONFIG ${ZABBIX_CONFIG}.bak
-            sed -i "s|^Server=.*|Server=zabbix.tietokettu.net|" $ZABBIX_CONFIG
-            sed -i "s|^ServerActive=.*|ServerActive=zabbix.tietokettu.net|" $ZABBIX_CONFIG
-            sed -i "s|^Hostname=.*|Hostname=${HOSTNAME}|" $ZABBIX_CONFIG
-
-            systemctl enable zabbix-agent2
-            systemctl restart zabbix-agent2
-
-            echo "[SUCCESS] Zabbix Agent 2 installed and configured for $HOSTNAME."
-            exit 0
-            ;;
-
         debian:10*)
             echo "Debian 10"
-            ZBX_VER=6.0
-            ZBX_PKG_VER=4
-            wget -q https://repo.zabbix.com/zabbix/${ZBX_VER}/debian/pool/main/z/zabbix-release/zabbix-release_${ZBX_VER}-${ZBX_PKG_VER}+debian10_all.deb
-            dpkg -i zabbix-release_${ZBX_VER}-${ZBX_PKG_VER}+debian10_all.deb
+            echo "deb https://repo.zabbix.com/zabbix/6.0/debian buster main" | tee /etc/apt/sources.list.d/zabbix.list
+            wget -qO - https://repo.zabbix.com/zabbix-official-repo.key | gpg --dearmor -o /etc/apt/trusted.gpg.d/zabbix.gpg
+
             apt update
-            apt install -y zabbix-agent2
+            apt install -y zabbix-agent2 zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql2
 
             HOSTNAME=$(hostname)
             echo "[INFO] Configuring Zabbix agent..."
@@ -319,12 +294,11 @@ if [[ "$zabbix_status" == "y" || "$zabbix_status" == "Y" || "$zabbix_status" == 
 
         debian:11*)
             echo "Debian 11"
-            ZBX_VER=6.0
-            ZBX_PKG_VER=4
-            wget -q https://repo.zabbix.com/zabbix/${ZBX_VER}/debian/pool/main/z/zabbix-release/zabbix-release_${ZBX_VER}-${ZBX_PKG_VER}+debian11_all.deb
-            dpkg -i zabbix-release_${ZBX_VER}-${ZBX_PKG_VER}+debian11_all.deb
+            echo "deb https://repo.zabbix.com/zabbix/6.0/debian bullseye main" | tee /etc/apt/sources.list.d/zabbix.list
+            wget -qO - https://repo.zabbix.com/zabbix-official-repo.key | gpg --dearmor -o /etc/apt/trusted.gpg.d/zabbix.gpg
+
             apt update
-            apt install -y zabbix-agent2
+            apt install -y zabbix-agent2 zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql2
 
             HOSTNAME=$(hostname)
             echo "[INFO] Configuring Zabbix agent..."
@@ -343,12 +317,11 @@ if [[ "$zabbix_status" == "y" || "$zabbix_status" == "Y" || "$zabbix_status" == 
 
         debian:12*)
             echo "Debian 12"
-            ZBX_VER=6.0
-            ZBX_PKG_VER=4
-            wget -q https://repo.zabbix.com/zabbix/${ZBX_VER}/debian/pool/main/z/zabbix-release/zabbix-release_${ZBX_VER}-${ZBX_PKG_VER}+debian12_all.deb
-            dpkg -i zabbix-release_${ZBX_VER}-${ZBX_PKG_VER}+debian12_all.deb
+            echo "deb https://repo.zabbix.com/zabbix/6.0/debian bookworm main" | tee /etc/apt/sources.list.d/zabbix.list
+            wget -qO - https://repo.zabbix.com/zabbix-official-repo.key | gpg --dearmor -o /etc/apt/trusted.gpg.d/zabbix.gpg
+
             apt update
-            apt install -y zabbix-agent2
+            apt install -y zabbix-agent2 zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql2
 
             HOSTNAME=$(hostname)
             echo "[INFO] Configuring Zabbix agent..."
@@ -370,7 +343,7 @@ if [[ "$zabbix_status" == "y" || "$zabbix_status" == "Y" || "$zabbix_status" == 
             wget -q https://repo.zabbix.com/zabbix/${ZBX_VER}/ubuntu/pool/main/z/zabbix-release/zabbix-release_${ZBX_VER}-1+ubuntu20.04_all.deb
             dpkg -i zabbix-release_${ZBX_VER}-1+ubuntu20.04_all.deb
             apt update
-            apt install -y zabbix-agent2
+            apt install -y zabbix-agent2 zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql2
 
             HOSTNAME=$(hostname)
             echo "[INFO] Configuring Zabbix agent..."
@@ -392,7 +365,7 @@ if [[ "$zabbix_status" == "y" || "$zabbix_status" == "Y" || "$zabbix_status" == 
             wget -q https://repo.zabbix.com/zabbix/${ZBX_VER}/ubuntu/pool/main/z/zabbix-release/zabbix-release_${ZBX_VER}-6+ubuntu24.04_all.deb
             dpkg -i zabbix-release_${ZBX_VER}-6+ubuntu24.04_all.deb
             apt update
-            apt install -y zabbix-agent2
+            apt install -y zabbix-agent2 zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql2
 
             echo "[INFO] Configuring Zabbix agent..."
             ZABBIX_CONFIG="/etc/zabbix/zabbix_agent2.conf"
