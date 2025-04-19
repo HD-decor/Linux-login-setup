@@ -298,6 +298,7 @@ if [[ "$zabbix_status" == "y" || "$zabbix_status" == "Y" || "$zabbix_status" == 
             echo "deb https://repo.zabbix.com/zabbix/6.0/debian bullseye main" > /etc/apt/sources.list.d/zabbix.list
             wget -qO - https://repo.zabbix.com/zabbix-official-repo.key | gpg --dearmor -o /etc/apt/trusted.gpg.d/zabbix.gpg
 
+            apt update
             apt install -y zabbix-agent2 
             apt install -y zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
 
