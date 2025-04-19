@@ -271,7 +271,7 @@ if [[ "$zabbix_status" == "y" || "$zabbix_status" == "Y" || "$zabbix_status" == 
 
         debian:10*)
             echo "Debian 10"
-            echo "deb https://repo.zabbix.com/zabbix/6.0/debian buster main" | tee /etc/apt/sources.list.d/zabbix.list
+            echo "deb https://repo.zabbix.com/zabbix/6.0/debian buster main" > /etc/apt/sources.list.d/zabbix.list
             wget -qO - https://repo.zabbix.com/zabbix-official-repo.key | gpg --dearmor -o /etc/apt/trusted.gpg.d/zabbix.gpg
 
             apt update
@@ -295,7 +295,7 @@ if [[ "$zabbix_status" == "y" || "$zabbix_status" == "Y" || "$zabbix_status" == 
 
         debian:11*)
             echo "Debian 11"
-            echo "deb https://repo.zabbix.com/zabbix/6.0/debian bullseye main" | tee /etc/apt/sources.list.d/zabbix.list
+            echo "deb https://repo.zabbix.com/zabbix/6.0/debian bullseye main" > /etc/apt/sources.list.d/zabbix.list
             wget -qO - https://repo.zabbix.com/zabbix-official-repo.key | gpg --dearmor -o /etc/apt/trusted.gpg.d/zabbix.gpg
 
             apt install -y zabbix-agent2 
