@@ -138,7 +138,7 @@ rm -rf "$TEMP_DIR"
 # Update and install basic tools
 read -p "Do you want to instaa and setup Zabbix? (y/n): " zabbix_status
 
-if [[ "$update_status" =~ ^[Yy](es)?$ ]]; then
+if [[ "$zabbix_status" =~ ^[Yy](es)?$ ]]; then
     . /etc/os-release
 
     echo "DEBUG: ID=$ID"
@@ -237,7 +237,7 @@ if [[ "$update_status" =~ ^[Yy](es)?$ ]]; then
 
 
 
-            
+
         debian:9*)
             echo "Debian 9"
             exit 0
