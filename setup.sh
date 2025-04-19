@@ -122,6 +122,7 @@ elif [ "$packagesystem" == "apt" ]; then
     sed -i '/^PermitRootLogin/s/yes/no/' /etc/ssh/sshd_config
     sed -i '/^PasswordAuthentication/s/yes/no/' /etc/ssh/sshd_config
     sed -i '/^ChallengeResponseAuthentication/s/yes/no/' /etc/ssh/sshd_config
+    . /etc/os-release
     case "$ID" in
     ubuntu)
         echo "[INFO] Ubuntu detected, restarting ssh service..."
