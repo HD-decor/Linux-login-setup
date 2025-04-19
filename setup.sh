@@ -129,3 +129,146 @@ echo "SSH configuration updated: Root login disabled, Password authentication di
 
 # Clean up temp directory
 rm -rf "$TEMP_DIR"
+
+
+#
+# ZABBIX START
+#
+
+# Update and install basic tools
+read -p "Do you want to instaa and setup Zabbix? (y/n): " zabbix_status
+
+if [[ "$update_status" =~ ^[Yy](es)?$ ]]; then
+    . /etc/os-release
+
+    echo "DEBUG: ID=$ID"
+    echo "DEBUG: VERSION_ID=$VERSION_ID"
+
+    case "${ID}:${VERSION_ID}" in
+
+
+        almalinux:8*)
+            echo "AlmaLinux 8"
+
+            # Get system hostname
+            HOSTNAME=$(hostname)
+
+            echo "[INFO] Installing Zabbix repository..."
+            rpm -Uvh https://repo.zabbix.com/zabbix/7.2/release/alma/8/noarch/zabbix-release-latest-7.2.el8.noarch.rpm
+
+            echo "[INFO] Cleaning dnf cache..."
+            dnf clean all
+
+            echo "[INFO] Installing Zabbix agent2 and plugins..."
+            dnf install -y zabbix-agent2 \
+                        zabbix-agent2-plugin-mongodb \
+                        zabbix-agent2-plugin-mssql \
+                        zabbix-agent2-plugin-postgresql
+
+            echo "[INFO] Configuring Zabbix agent..."
+            ZABBIX_CONFIG="/etc/zabbix/zabbix_agent2.conf"
+
+            # Backup original config
+            cp $ZABBIX_CONFIG ${ZABBIX_CONFIG}.bak
+
+            # Replace Server and Hostname entries
+            sed -i "s|^Server=.*|Server=zabbix.tietokettu.net|" $ZABBIX_CONFIG
+            sed -i "s|^ServerActive=.*|ServerActive=zabbix.tietokettu.net|" $ZABBIX_CONFIG
+            sed -i "s|^Hostname=.*|Hostname=${HOSTNAME}|" $ZABBIX_CONFIG
+
+            echo "[INFO] Enabling and starting Zabbix agent2..."
+            systemctl enable --now zabbix-agent2
+
+            echo "[SUCCESS] Zabbix Agent 2 installed and configured for $HOSTNAME."
+            exit 0
+            ;;
+
+
+
+
+        almalinux:9*)
+            echo "AlmaLinux 9"
+
+            echo "[INFO] Disabling Zabbix packages from EPEL if present..."
+            EPEL_REPO="/etc/yum.repos.d/epel.repo"
+            if [ -f "$EPEL_REPO" ]; then
+                if ! grep -q "excludepkgs=zabbix*" "$EPEL_REPO"; then
+                    echo "excludepkgs=zabbix*" >> "$EPEL_REPO"
+                    echo "[INFO] Added 'excludepkgs=zabbix*' to $EPEL_REPO"
+                else
+                    echo "[INFO] EPEL already excludes Zabbix packages"
+                fi
+            else
+                echo "[WARN] EPEL repo not found, skipping exclusion."
+            fi
+
+            echo "[INFO] Installing Zabbix repo for AlmaLinux 9..."
+            rpm -Uvh https://repo.zabbix.com/zabbix/7.2/release/alma/9/noarch/zabbix-release-latest-7.2.el9.noarch.rpm
+
+            echo "[INFO] Cleaning DNF cache..."
+            dnf clean all
+
+            echo "[INFO] Installing Zabbix agent2 and plugins..."
+            dnf install -y zabbix-agent2 \
+                        zabbix-agent2-plugin-mongodb \
+                        zabbix-agent2-plugin-mssql \
+                        zabbix-agent2-plugin-postgresql
+
+            echo "[INFO] Configuring Zabbix agent2..."
+            ZABBIX_CONFIG="/etc/zabbix/zabbix_agent2.conf"
+            cp "$ZABBIX_CONFIG" "$ZABBIX_CONFIG.bak"
+
+            HOSTNAME=$(hostname)
+
+            sed -i "s|^Server=.*|Server=zabbix.tietokettu.net|" "$ZABBIX_CONFIG"
+            sed -i "s|^ServerActive=.*|ServerActive=zabbix.tietokettu.net|" "$ZABBIX_CONFIG"
+            sed -i "s|^Hostname=.*|Hostname=${HOSTNAME}|" "$ZABBIX_CONFIG"
+
+            echo "[INFO] Enabling and starting Zabbix agent2..."
+            systemctl enable --now zabbix-agent2
+
+            echo "[SUCCESS] Zabbix Agent 2 installed and configured for host: $HOSTNAME"
+
+
+
+            exit 0
+            ;;
+
+
+
+
+            
+        debian:9*)
+            echo "Debian 9"
+            exit 0
+            ;;
+        debian:10*)
+            echo "Debian 10"
+            exit 0
+            ;;
+        debian:11*)
+            echo "Debian 11"
+            exit 0
+            ;;
+        debian:12*)
+            echo "Debian 12"
+            exit 0
+            ;;
+        ubuntu:20.04)
+            echo "Ubuntu 20.04"
+            exit 0
+            ;;
+        ubuntu:22.04)
+            echo "Ubuntu 22.04"
+            exit 0
+            ;;
+        ubuntu:24.04)
+            echo "Ubuntu 24.04"
+            exit 0
+            ;;
+        *)
+            echo "Unsupported OS or version"
+            exit 1
+            ;;
+    esac
+fi
