@@ -276,7 +276,7 @@ if [[ "$zabbix_status" == "y" || "$zabbix_status" == "Y" || "$zabbix_status" == 
 
             apt update
             apt install -y zabbix-agent2 
-            apt install -y zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql2
+            apt install -y zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
 
             HOSTNAME=$(hostname)
             echo "[INFO] Configuring Zabbix agent..."
@@ -299,7 +299,7 @@ if [[ "$zabbix_status" == "y" || "$zabbix_status" == "Y" || "$zabbix_status" == 
             wget -qO - https://repo.zabbix.com/zabbix-official-repo.key | gpg --dearmor -o /etc/apt/trusted.gpg.d/zabbix.gpg
 
             apt install -y zabbix-agent2 
-            apt install -y zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql2
+            apt install -y zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
 
             HOSTNAME=$(hostname)
             echo "[INFO] Configuring Zabbix agent..."
@@ -322,8 +322,8 @@ if [[ "$zabbix_status" == "y" || "$zabbix_status" == "Y" || "$zabbix_status" == 
             wget -qO - https://repo.zabbix.com/zabbix-official-repo.key | gpg --dearmor -o /etc/apt/trusted.gpg.d/zabbix.gpg
 
             apt update
-            apt install -y zabbix-agent2 
-            apt install -y zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql2
+            apt install -y zabbix-agent2
+            apt install -y zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
 
             HOSTNAME=$(hostname)
             echo "[INFO] Configuring Zabbix agent..."
@@ -345,7 +345,7 @@ if [[ "$zabbix_status" == "y" || "$zabbix_status" == "Y" || "$zabbix_status" == 
             wget -q https://repo.zabbix.com/zabbix/${ZBX_VER}/ubuntu/pool/main/z/zabbix-release/zabbix-release_${ZBX_VER}-1+ubuntu20.04_all.deb
             dpkg -i zabbix-release_${ZBX_VER}-1+ubuntu20.04_all.deb
             apt update
-            apt install -y zabbix-agent2 zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql2
+            apt install -y zabbix-agent2 zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
 
             HOSTNAME=$(hostname)
             echo "[INFO] Configuring Zabbix agent..."
@@ -367,7 +367,7 @@ if [[ "$zabbix_status" == "y" || "$zabbix_status" == "Y" || "$zabbix_status" == 
             wget -q https://repo.zabbix.com/zabbix/${ZBX_VER}/ubuntu/pool/main/z/zabbix-release/zabbix-release_${ZBX_VER}-6+ubuntu24.04_all.deb
             dpkg -i zabbix-release_${ZBX_VER}-6+ubuntu24.04_all.deb
             apt update
-            apt install -y zabbix-agent2 zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql2
+            apt install -y zabbix-agent2 zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
 
             echo "[INFO] Configuring Zabbix agent..."
             ZABBIX_CONFIG="/etc/zabbix/zabbix_agent2.conf"
